@@ -768,6 +768,7 @@ public class COSClient implements COS {
         rejectEmpty(renameRequest.getDstObject(), "The length of the dst key must be greater than 0");
         CosHttpRequest<RenameRequest> request = createRequest(renameRequest.getBucketName(),
                 renameRequest.getDstObject(), renameRequest, HttpMethodName.PUT);
+        request.addParameter("rename", null);
         request.addHeader("x-cos-rename-source", renameRequest.getSrcObject());
         invoke(request, voidCosResponseHandler);
     }
@@ -1666,7 +1667,7 @@ public class COSClient implements COS {
             byte[] xml = RequestXmlFactory
                     .convertToXmlByteArray(completeMultipartUploadRequest.getPartETags());
 
-            request.addHeader("Content-Type", "text/plain");
+            request.addHeader("Content-Type", "application/xml");
             request.addHeader("Content-Length", String.valueOf(xml.length));
             ObjectMetadata objectMetadata = completeMultipartUploadRequest.getObjectMetadata();
             if(objectMetadata != null) {
